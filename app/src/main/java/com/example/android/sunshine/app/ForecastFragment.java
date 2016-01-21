@@ -65,16 +65,36 @@ public class ForecastFragment extends Fragment {
             return true;
         } else if (id == R.id.show_location) {
 
+            openPreferredLocationInMap();
+            return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openPreferredLocationInMap()
+    {
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = sharedPref.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
+
+        Uri geoLocation = Uri.parse("geo:0,0?").buildUpon().appendQueryParameter("q",location).build();
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+
+        if(intent.resolveActivity(getActivity().getPackageManager()) != null)
+        {
+            startActivity(intent);
+        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         List<String> myList = new ArrayList<String>();
+
         adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, myList);
         ListView lv = (ListView) rootView.findViewById(R.id.listview_forecast);
         lv.setAdapter(adapter);

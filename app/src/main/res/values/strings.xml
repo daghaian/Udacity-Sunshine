@@ -76,5 +76,6 @@
     <string name="pref_units_default">metric</string>
     <string name="Metric">Metric</string>
     <string name="show_location">Show Preferred Location</string>
+    <string name="action_share">Share</string>
 
 </resources>
